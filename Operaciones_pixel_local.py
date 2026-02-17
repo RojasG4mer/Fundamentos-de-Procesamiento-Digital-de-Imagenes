@@ -13,13 +13,11 @@ import os
 # ==========================================
 # Cambia esto por la ruta de tu imagen o pon la imagen en la misma carpeta que este script
 nombre_imagen = r'C:\Fundamentos-de-Procesamiento-Digital-de-Imagenes\figuras.BMP' 
-
+# Popi_fachero.jpg
 # Verificamos si existe el archivo antes de intentar leerlo
 if not os.path.exists(nombre_imagen):
     print(f"ERROR CRÍTICO: No se encuentra el archivo '{nombre_imagen}' en la ruta actual.")
     print(f"Ruta actual de trabajo: {os.getcwd()}")
-    # Intenta poner la ruta absoluta si falla, ejemplo:
-    # nombre_imagen = r'C:\Usuarios\TuUsuario\Escritorio\Popi_fachero.jpg'
     exit()
 
 # ==========================================
