@@ -244,7 +244,4 @@ plt.imshow(ima_alpha, cmap = 'gray')
 # plt.axis('off')
 plt.show()
 
-"""# Problema 6
-Suponga que usted tiene un sistema de visión robótica que está clasificando 3 objetos de diferente color y colocándolos mediante el brazo de un robot en 3 contenedores diferentes. ¿De qué forma resolvería el problema de clasificación utilizando los métodos y algoritmos de Visión Robótica vistos en clase?
-"""
 
