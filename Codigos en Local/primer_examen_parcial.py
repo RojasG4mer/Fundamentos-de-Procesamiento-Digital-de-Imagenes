@@ -22,10 +22,6 @@ else:
     plt.title('Popi fachero')
     plt.axis('off')
     plt.show()
-# print(popi_fachero_grises.max())
-
-from google.colab.patches import cv2_imshow
-cv2_imshow(popi_fachero)
 
 """# Problema 1
 Realizar lo siguiente:
@@ -165,7 +161,6 @@ dy = 1000
 
 im_desp = traslada(popi_fachero_grises, dx, dy)
 
-plt.show((8, 6))
 plt.imshow(im_desp, cmap = 'gray')
 # plt.axis('off')
 plt.show()
