@@ -1,2 +1,11 @@
-/venv/
-**/__pychache__/
+# Ignorar entornos virtuales
+venv/
+.venv/
+env/
+# Ignorar archivos auxiliares de LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.pdf
