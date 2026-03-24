@@ -1,2 +1,6 @@
 Papers/.DS_Store
 .DS_Store
+# Ignorar entornos virtuales
+venv/
+.venv/
+env/
