@@ -143,7 +143,7 @@ anti = np.abs(Antift_2d_manual(Filtrada))
 Filtrada = np.log(np.abs(Filtrada) + 1)
 
 # Graficamos 
-fig, axs = plt.subplots(1, 4, figsize=(18, 6))
+fig, axs = plt.subplots(1, 4, figsize=(24, 6))
 
 axs[0].imshow(ima, cmap='gray')
 axs[0].set_title('Imagen Original $f(x, y)$')  

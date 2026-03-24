@@ -1,2 +1,12 @@
 Papers/.DS_Store
 .DS_Store
+# Ignorar entornos virtuales
+venv/
+.venv/
+env/
+# Ignorar archivos auxiliares de LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
