@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 ruta = r'Imagenes/Copia de Casa con bordes.jpg' # Casa con bordes
-# '/content/drive/MyDrive/Procesamiento Digital del Imágenes/Imagenes/figuras.BMP' # Figuras
+
 ima = cv2.imread(ruta)
 ima = cv2.cvtColor(ima, cv2.COLOR_BGR2GRAY)
 ima = ima[200:300, 150:350]
