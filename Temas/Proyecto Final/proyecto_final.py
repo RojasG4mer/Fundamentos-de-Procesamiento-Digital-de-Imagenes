@@ -7,7 +7,6 @@ def rgb_to_gray(img):
     return np.dot(img[..., :3], [0.2989, 0.5870, 0.1140])
 
 def convolve2d_fast(image, kernel):
-    """Convolución espacial 2D rápida utilizando slicing de NumPy."""
     k_h, k_w = kernel.shape
     pad_h, pad_w = k_h // 2, k_w // 2
     
@@ -22,8 +21,7 @@ def convolve2d_fast(image, kernel):
     return out
 
 def harris_corner_detector(img_gray, k=0.04, window_size=3):
-    """Implementa el detector de esquinas de Harris desde cero."""
-    # 1. Filtros de Sobel para gradientes espaciales
+    # Filtros de Sobel para gradientes espaciales
     sobel_x = np.array([[-1, 0, 1], 
                         [-2, 0, 2], 
                         [-1, 0, 1]])
@@ -35,12 +33,12 @@ def harris_corner_detector(img_gray, k=0.04, window_size=3):
     Ix = convolve2d_fast(img_gray, sobel_x)
     Iy = convolve2d_fast(img_gray, sobel_y)
     
-    # 2. Productos de las derivadas
+    # Productos de las derivadas
     Ixx = Ix ** 2
     Iyy = Iy ** 2
     Ixy = Ix * Iy
     
-    # 3. Suavizado (Kernel Gaussiano simple de 3x3)
+    # Suavizado (Kernel Gaussiano simple de 3x3)
     gaussian_kernel = np.array([[1, 2, 1], 
                                 [2, 4, 2], 
                                 [1, 2, 1]]) / 16.0
@@ -49,7 +47,7 @@ def harris_corner_detector(img_gray, k=0.04, window_size=3):
     Syy = convolve2d_fast(Iyy, gaussian_kernel)
     Sxy = convolve2d_fast(Ixy, gaussian_kernel)
     
-    # 4. Respuesta de Harris
+    # Respuesta de Harris
     det_M = (Sxx * Syy) - (Sxy ** 2)
     trace_M = Sxx + Syy
     R = det_M - k * (trace_M ** 2)
@@ -83,7 +81,6 @@ def non_maximum_suppression(R, threshold_ratio=0.01, min_distance=10):
     return np.array(keep)
 
 def calculate_distances(points):
-    """Calcula la distancia euclidiana entre todos los pares de puntos detectados."""
     distances = []
     n = len(points)
     for i in range(n):
@@ -94,9 +91,9 @@ def calculate_distances(points):
     return distances
 
 def main():
-    # 1. Lectura de imagen (Sustituye 'calibracion.jpg' por tu ruta)
-    # OpenCV lee en BGR por defecto
-    img_bgr = cv2.imread('calibracion.jpg') 
+    # Lectura de imagen
+    ruta = r'Temas\Proyecto Final\Cuadros.jpeg'
+    img_bgr = cv2.imread(ruta) 
     if img_bgr is None:
         print("No se pudo cargar la imagen. Verifica la ruta.")
         return
@@ -104,17 +101,17 @@ def main():
     img_rgb = img_bgr[:, :, ::-1] # BGR a RGB
     img_gray = rgb_to_gray(img_rgb)
     
-    # 2. Detección de características
+    # Detección de características
     print("Calculando respuesta de Harris...")
     R = harris_corner_detector(img_gray, k=0.04)
     
-    # 3. Extracción de puntos (Ajusta min_distance según la resolución de tu imagen)
+    # Extracción de puntos (Ajusta min_distance según la resolución de tu imagen)
     print("Aplicando Supresión de No Máximos...")
     corners = non_maximum_suppression(R, threshold_ratio=0.05, min_distance=25)
     
     print(f"Se encontraron {len(corners)} esquinas.")
     
-    # 4. Mostrar resultados con Matplotlib
+    # Graficando...
     plt.figure(figsize=(10, 8))
     plt.imshow(img_rgb)
     
@@ -132,7 +129,7 @@ def main():
             plt.plot([p1[1], p2[1]], [p1[0], p2[0]], 'c--', linewidth=2)
             print(f"Distancia de ejemplo entre dos puntos contiguos: {dist:.2f} píxeles")
 
-    plt.title('Detección de puntos de calibración (Harris Numpy puro)')
+    # plt.title('Detección de puntos de calibración (Harris)')
     plt.axis('off')
     plt.tight_layout()
     plt.show()
