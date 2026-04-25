@@ -10,11 +10,11 @@ def convolve2d_fast(image, kernel):
     k_h, k_w = kernel.shape
     pad_h, pad_w = k_h // 2, k_w // 2
     
-    # Rellenar la imagen para manejar los bordes
+    # Padding
     padded = np.pad(image, ((pad_h, pad_h), (pad_w, pad_w)), mode='reflect')
     out = np.zeros_like(image)
     
-    # Desplazamiento y suma multiplicativa
+    # Desplazamiento y suma multiplicativa (con slicing para eficiencia)
     for i in range(k_h):
         for j in range(k_w):
             out += padded[i:i+image.shape[0], j:j+image.shape[1]] * kernel[i, j]
@@ -55,10 +55,10 @@ def harris_corner_detector(img_gray, k=0.04, window_size=3):
     return R
 
 def non_maximum_suppression(R, threshold_ratio=0.01, min_distance=10):
-    """Aplica supresión de no máximos para aislar las esquinas detectadas."""
+    """Aplica supresión de no máximos para aislar las esquinas detectadas"""
     threshold = np.max(R) * threshold_ratio
     # Encontrar coordenadas que superen el umbral
-    coords = np.argwhere(R > threshold)
+    coords = np.argwhere(R > threshold) # Encuentra las posiciones donde se cumple la condicion 
     
     # Ordenar por el valor de respuesta de Harris (de mayor a menor)
     responses = R[coords[:, 0], coords[:, 1]]
@@ -92,7 +92,7 @@ def calculate_distances(points):
 
 def main():
     # Lectura de imagen
-    ruta = r'Temas\Proyecto Final\Cuadros.jpeg'
+    ruta = r'Temas/Proyecto Final/Cuadros.jpeg'
     img_bgr = cv2.imread(ruta) 
     if img_bgr is None:
         print("No se pudo cargar la imagen. Verifica la ruta.")
@@ -102,16 +102,14 @@ def main():
     img_gray = rgb_to_gray(img_rgb)
     
     # Detección de características
-    print("Calculando respuesta de Harris...")
     R = harris_corner_detector(img_gray, k=0.04)
     
-    # Extracción de puntos (Ajusta min_distance según la resolución de tu imagen)
-    print("Aplicando Supresión de No Máximos...")
+    # Extracción de puntos: 
     corners = non_maximum_suppression(R, threshold_ratio=0.05, min_distance=25)
     
     print(f"Se encontraron {len(corners)} esquinas.")
     
-    # Graficando...
+    # Graficas
     plt.figure(figsize=(10, 8))
     plt.imshow(img_rgb)
     
@@ -122,7 +120,7 @@ def main():
         y_coords = corners[:, 0]
         plt.scatter(x_coords, y_coords, c='red', s=40, marker='x')
         
-        # Ejemplo: Dibujar una línea entre los primeros dos puntos encontrados
+        # Línea entre los primeros dos puntos encontrados (por el algoritmo)
         if len(corners) >= 2:
             p1, p2 = corners[0], corners[1]
             dist = np.sqrt(np.sum((p1 - p2)**2))
